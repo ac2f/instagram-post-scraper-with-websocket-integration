@@ -4,7 +4,6 @@ const { exec } = require("child_process");
 var port = 11121;
 var secret = "0512e3136160817937d0bed95fa9944e65bdd23bcf1279445205a5541c0e55af5fe3f8eb32faa45045529bff12d927c33566369478b7d3b27ce9c672686d22e7";
 var dataFile = "data.json";
-
 const wss = new websocket.Server({"port": port});
 const fs = require('fs');
 

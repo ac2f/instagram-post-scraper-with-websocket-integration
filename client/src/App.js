@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const webSocketHost ="ws://127.0.0.1:11121" 
+const webSocketHost ="ws://79.110.234.43:11121" 
 function App() {
   var secretKeyInput = useRef(null);
   var outgoingDataInput__loginName = useRef(null);
