@@ -2,8 +2,8 @@ import './App.css';
 import { useRef, useState, useEffect } from "react"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-const webSocketHost ="ws://79.110.234.43:11121" 
+// 79.110.234.43
+const webSocketHost ="ws://127.0.0.1:11121" 
 function App() {
   var secretKeyInput = useRef(null);
   var outgoingDataInput__loginName = useRef(null);
@@ -12,8 +12,8 @@ function App() {
   var outgoingDataInput__targetAccount = useRef(null);
   var outgoingDataInput__postLimit = useRef(null);
   var outgoingDataInput__serviceName = useRef(null);
+  var outgoingDataInput__verificationCode = useRef(null);
   var incomingDataInput__ConsoleOUT = useRef(null);
-  var incomingDataInput__ERR = useRef(null);
   const [showSecretInput, setShowSecretInput] = useState(localStorage.getItem("secret") === null);
   var ws = new WebSocket(webSocketHost);
   // function sleep(ms) {
@@ -39,13 +39,13 @@ function App() {
     reconnect();
   };
   const sendMessage = async() => {
-    var array = [outgoingDataInput__loginName, outgoingDataInput__loginPass, outgoingDataInput__orderId, outgoingDataInput__postLimit, outgoingDataInput__serviceName, outgoingDataInput__targetAccount];
+    var array = [outgoingDataInput__orderId, outgoingDataInput__postLimit, outgoingDataInput__serviceName, outgoingDataInput__targetAccount];
     for (let index = 0; index < array.length; index++) {
       let element = array[index];
       if (element.current.value === ""){
         toast.error("Lütfen tüm bilgileri giriniz!")
         return;
-      }
+      };
     }
     if (ws.CLOSED || ws.CLOSING){
       reconnect();
@@ -58,8 +58,9 @@ function App() {
       "orderId": outgoingDataInput__orderId.current.value,
       "targetAccount": outgoingDataInput__targetAccount.current.value,
       "postLimit": outgoingDataInput__postLimit.current.value,
-      "serviceName": outgoingDataInput__serviceName.current.value
-    }
+      "serviceName": outgoingDataInput__serviceName.current.value,
+      "verificationCode": outgoingDataInput__verificationCode.current.value
+    };
     ws.send(JSON.stringify(data));
     console.log("Succesfully sent message: " + JSON.stringify(data)); 
   };
@@ -102,7 +103,7 @@ function App() {
               <h3>INSTAGRAM CLIENT</h3>
               <br/>
               <div className="form">
-                <h5>GİRİŞ YAPILACAK HESABIN;</h5>
+                <h5>GİRİŞ YAPILACAK HESABIN(Zorunlu değil*);</h5>
                 <a>Kullanıcı Adı : </a><input id="" ref={outgoingDataInput__loginName}/>
                 <a>Şifresi :</a><input id="" ref={outgoingDataInput__loginPass}/>
                 <br/><br/>
@@ -117,7 +118,13 @@ function App() {
               <div className="incoming">
                 <textarea readOnly={true} ref={incomingDataInput__ConsoleOUT} type="text" />
               </div>
-              <br/>
+              <br/><br/><br/><br/>
+              <h4>DOĞRULAMA KODU(1 kere butona tıkladıktan sonra e-postanıza kod geldiyse buraya yazıp tekrar butona tıklayın)</h4>
+              <input type="number" max={999999} ref={outgoingDataInput__verificationCode} onChange={(event) => {
+                if (outgoingDataInput__verificationCode.current.value.length>6){
+                  outgoingDataInput__verificationCode.current.value = outgoingDataInput__verificationCode.current.value.substring(0,6);
+                }
+              }}/>
             </div>
           )
         }

@@ -24,6 +24,22 @@ wss.on("connection", ws => {
         }
         try {
             data = JSON.parse(data);
+            if (data["verificationCode"] !== "") {
+                for (let index = 0; index < 4; index++) {
+                    setTimeout(() => {
+                        if (fs.existsSync(`codes/${data["loginName"]}-code.txt`)){
+                            if (readFile(`codes/${data["loginName"]}-code.txt`).includes("WAITING")){
+                                fs.writeFileSync(`codes/${data["loginName"]}-code.txt`, data["verificationCode"]);
+                                model["success"] = true;
+                                model["data"] = "Doğrulama kodu girildi! Lütfen bekleyiniz..";
+                                ws.send(JSON.stringify(model));
+                                return;
+                            };
+                        };
+                    }, 6000);
+                };
+                return;
+            };
             var expireTime = readJSONFile(dataFile).expire;
             var error = false;
             console.log("Gizli anahtar: " + data["secret"]+"\nSON KULLANMA SURESI: " + expireTime+"\nSUANKI ZAMAN: " + Date.now());
