@@ -104,7 +104,7 @@ function App() {
               <br/>
               <div className="form">
                 <h5>GİRİŞ YAPILACAK HESABIN(Zorunlu değil*);</h5>
-                <a>Kullanıcı Adı : </a><input id="" ref={outgoingDataInput__loginName}/>
+                <a>Kullanıcı Adı : </a><input id="" ref={outgoingDataInput__loginName} value={localStorage.getItem("defaultLoginName")}/><input type="submit" value="Kullanıcı adını kaydet" onClick={()=>{localStorage.setItem("defaultLoginName", outgoingDataInput__loginName.current.value)}}/>
                 <a>Şifresi :</a><input id="" ref={outgoingDataInput__loginPass}/>
                 <br/><br/>
                 <a>Sipariş Numarası :</a><input id="" ref={outgoingDataInput__orderId}/>

@@ -30,13 +30,12 @@ class InstagramPostScraper:
         client = Client();
         if (len(self.proxies)>1):
             client.set_proxy(random.choice(self.proxies));
-        try:
-            client.load_settings(f"sessions/{GIRIS_YAPILACAK_KULLANICI}.json");
-        except:
-            client.dump_settings(f"sessions/{GIRIS_YAPILACAK_KULLANICI}.json");
-        if (all(len(i) > 0 for i in [GIRIS_YAPILACAK_KULLANICI, GIRIS_YAPILACAK_KULLANICI_SIFRE])):
-            client.login(GIRIS_YAPILACAK_KULLANICI, GIRIS_YAPILACAK_KULLANICI_SIFRE);
-
+        if (os.path.exists(f"sessions/{GIRIS_YAPILACAK_KULLANICI}.txt")):
+            client.load_settings(f"sessions/{GIRIS_YAPILACAK_KULLANICI}.txt");
+        elif (all(len(i) > 0 for i in [GIRIS_YAPILACAK_KULLANICI, GIRIS_YAPILACAK_KULLANICI_SIFRE]) ):
+                client.login(GIRIS_YAPILACAK_KULLANICI, GIRIS_YAPILACAK_KULLANICI_SIFRE);
+        if (not os.path.exists(f"sessions/{GIRIS_YAPILACAK_KULLANICI}.txt")):
+            client.dump_settings(f"sessions/{GIRIS_YAPILACAK_KULLANICI}.txt");
         medias = client.user_medias(client.user_id_from_username(username),amount=limit);
         for media in medias:
             dataToWrite:str = self.orderId + "|https://instagram.com/p/" + media.code+"|"+HIZMET+"\n";

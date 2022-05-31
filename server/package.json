@@ -5,12 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx nodemon  \"node index.js\""
+    "start": "npx nodemon  \"node index.js\" --ignore 'sessions/*.json'"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "nodemon": "^2.0.16",
     "ws": "^8.6.0"
+  },
+  "nodemonConfig": {
+    "ignore": ["sessions/*.json", "*.json", "codes/*.json", "posts/*.txt"]
   }
 }
